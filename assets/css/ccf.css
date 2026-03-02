@@ -1,0 +1,380 @@
+/* CCF 列表页：筛选行、搜索、卡片 */
+
+.filters-wrapper {
+    background: white;
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.filter-row:last-child {
+    margin-bottom: 0;
+}
+
+.filter-row-label {
+    font-weight: 600;
+    color: var(--text-color);
+    min-width: 4em;
+    font-size: 0.95rem;
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    padding: 0.45rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 999px;
+    background: white;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.search-wrapper label {
+    font-weight: 500;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-wrapper label i {
+    color: var(--primary-color);
+}
+
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+}
+
+.search-options {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.search-option-btn {
+    padding: 0.4rem 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: 999px;
+    background: white;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.search-option-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.search-option-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.loading,
+.error-message {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-light);
+}
+
+.loading i {
+    font-size: 2rem;
+    animation: spin 1s linear infinite;
+}
+
+.error-message {
+    color: #b91c1c;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.result-count {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-light);
+}
+
+.result-count strong {
+    color: var(--primary-color);
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+}
+
+.ccf-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+}
+
+.ccf-card:hover {
+    box-shadow: 0 8px 20px rgba(30, 58, 95, 0.12);
+}
+
+.ccf-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.ccf-card-fullname {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+}
+
+.ccf-card-abbr {
+    flex-shrink: 0;
+    padding: 0.25rem 0.6rem;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.ccf-card-abbr.empty {
+    background: var(--text-light);
+}
+
+.ccf-card-meta {
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* 第一行：分级圆角矩形 + 类型胶囊，同一行可换行 */
+.ccf-meta-tags {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 类型胶囊：会议蓝 / 期刊绿 */
+.ccf-meta-type {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.ccf-meta-type-conference {
+    background: rgba(45, 90, 135, 0.15);
+    color: var(--secondary-color);
+}
+
+.ccf-meta-type-journal {
+    background: rgba(46, 125, 50, 0.2);
+    color: #1b5e20;
+}
+
+/* 领域：左侧主题色竖条 + 文字 */
+.ccf-meta-field {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 0.6rem;
+    margin-bottom: 0.35rem;
+    color: var(--text-color);
+    font-size: 0.85rem;
+}
+
+/* 出版社：小号灰色弱化 */
+.ccf-meta-publisher {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 0;
+}
+
+/* 分级 A/B/C 圆角矩形：A红/B黄/C绿填充，加粗白色字体（提高优先级避免被覆盖） */
+.ccf-card .ccf-rating-block {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75em;
+    height: 1.5em;
+    padding: 0 0.4em;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff !important;
+}
+
+.ccf-card .ccf-rating-block.ccf-rating-a {
+    background: var(--ccf-rating-a) !important;
+    background-color: var(--ccf-rating-a) !important;
+    color: #fff !important;
+}
+
+.ccf-card .ccf-rating-block.ccf-rating-b {
+    background: var(--ccf-rating-b) !important;
+    background-color: var(--ccf-rating-b) !important;
+    color: #fff !important;
+}
+
+.ccf-card .ccf-rating-block.ccf-rating-c {
+    background: var(--ccf-rating-c) !important;
+    background-color: var(--ccf-rating-c) !important;
+    color: #fff !important;
+}
+
+.ccf-card .ccf-rating-block:not(.ccf-rating-a):not(.ccf-rating-b):not(.ccf-rating-c) {
+    background: var(--text-light) !important;
+    background-color: var(--text-light) !important;
+    color: var(--text-color) !important;
+    font-weight: 700;
+}
+
+/* 搜索匹配高亮：半透明框 */
+.ccf-search-highlight {
+    background: rgba(30, 58, 95, 0.2);
+    border-radius: 3px;
+    padding: 0 2px;
+}
+
+.ccf-card-footer {
+    margin-top: auto;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.ccf-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.ccf-card-link:hover {
+    background: var(--secondary-color);
+    color: white;
+}
+
+/* 默认全部时：领域标题居左、大号；灰色横线为期刊/会议分隔 */
+.ccf-field-title {
+    grid-column: 1 / -1;
+    text-align: left;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 1.5rem 0 0.2rem;
+}
+
+.ccf-field-title:first-child {
+    margin-top: 0;
+}
+
+.ccf-type-divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.25rem 0 0.5rem;
+}
+
+.ccf-type-divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.ccf-type-divider-label {
+    flex-shrink: 0;
+    padding: 0 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .filter-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}

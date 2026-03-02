@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCF 推荐国际学术会议与期刊 | CCF Collect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/ccf.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">CCF 推荐目录</a>
+                <a href="https://github.com/JW-Yuan/repo/tree/main/ccf-collect" target="_blank" rel="noopener" class="nav-github" title="GitHub 仓库" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">期刊与会议</a></li>
+                <li><a href="https://www.ccf.org.cn/" target="_blank" class="nav-link">CCF 官网</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="section ccf-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-graduation-cap"></i>
+                CCF 推荐国际学术会议与期刊（2022）
+            </h2>
+            <div class="section-header-row">
+                <p class="section-desc">按领域、类型、分级筛选；支持按缩写或全名搜索。</p>
+                <p id="section-stats" class="section-stats" style="display: none;">共 <strong id="total-n">0</strong> 条（期刊 <strong id="journal-n">0</strong>，会议 <strong id="conference-n">0</strong>）</p>
+            </div>
+
+            <!-- 三行筛选：领域、类型、分级 -->
+            <div class="filters-wrapper">
+                <div class="filter-row">
+                    <span class="filter-row-label">领域</span>
+                    <div id="filter-field" class="filter-buttons"></div>
+                </div>
+                <div class="filter-row">
+                    <span class="filter-row-label">类型</span>
+                    <div id="filter-type" class="filter-buttons"></div>
+                </div>
+                <div class="filter-row">
+                    <span class="filter-row-label">分级</span>
+                    <div id="filter-rating" class="filter-buttons"></div>
+                </div>
+            </div>
+
+            <!-- 搜索框 -->
+            <div class="search-wrapper">
+                <label for="search-input"><i class="fas fa-search"></i> 搜索</label>
+                <input type="text" id="search-input" class="search-input" placeholder="按缩写或全名搜索...">
+                <div class="search-options">
+                    <button type="button" id="search-whole-word" class="search-option-btn" title="仅匹配完整词语">全字匹配</button>
+                    <button type="button" id="search-case" class="search-option-btn" title="区分大小写">大小写匹配</button>
+                </div>
+            </div>
+
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner"></i>
+                <p class="loading-text">正在加载数据...</p>
+            </div>
+            <div id="error" class="error-message" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p class="error-text">加载失败，请通过本地服务器或 GitHub Pages 访问</p>
+            </div>
+
+            <div id="result-area" style="display: none;">
+                <p class="result-count">共 <strong id="result-n">0</strong> 条</p>
+                <div id="cards-container" class="cards-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> 数据来源：<a href="https://www.ccf.org.cn/" target="_blank">中国计算机学会</a>《中国计算机学会推荐国际学术会议和期刊目录-2022》</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/ccf.js"></script>
+    <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
