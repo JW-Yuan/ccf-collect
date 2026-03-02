@@ -130,16 +130,17 @@ function applyFilters() {
             var raw = (r || '').toString().trim().replace(/类$/, '').toUpperCase().charAt(0);
             return ratingOrder[raw] !== undefined ? ratingOrder[raw] : 3;
         }
+        /* 领域 → 类型(会议/期刊) → 评级(A-C) → 名称：每领域下会议横杠一次+该领域所有会议卡片(A-C)，期刊横杠一次+该领域所有期刊卡片(A-C) */
         list.sort(function (a, b) {
-            var ra = ratingRank(a.Rating);
-            var rb = ratingRank(b.Rating);
-            if (ra !== rb) return ra - rb;
             var fa = fieldOrder.indexOf(a.field);
             var fb = fieldOrder.indexOf(b.field);
             if (fa !== fb) return fa - fb;
             var ta = typeOrder.indexOf(a.type);
             var tb = typeOrder.indexOf(b.type);
             if (ta !== tb) return ta - tb;
+            var ra = ratingRank(a.Rating);
+            var rb = ratingRank(b.Rating);
+            if (ra !== rb) return ra - rb;
             return (a['Full-Name'] || '').localeCompare(b['Full-Name'] || '', 'zh-CN');
         });
     }
@@ -158,7 +159,7 @@ function renderCards(list, searchHighlight, searchCaseSensitive) {
 
     var search = (searchHighlight && searchHighlight.length > 0) ? searchHighlight : '';
     var caseSensitive = !!searchCaseSensitive;
-    /* 有结果时始终使用分组布局：居左领域 + 横杠类型，仅在遇到该领域/类型时输出（不存在则不显示） */
+    /* 每领域仅各输出一次会议横杠、一次期刊横杠；横杠下为该领域该类型的所有卡片，顺序 A-C */
     var lastField = null;
     var lastType = null;
     list.forEach(function (item) {
