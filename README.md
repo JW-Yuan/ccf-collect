@@ -2,6 +2,8 @@
 
 本仓库整理了中国计算机学会（CCF）2022 年推荐国际学术期刊与会议的分领域评级数据，包含简称、全称、出版社/主办方及网址等信息，便于检索与引用。
 
+**网页直达**：[https://jw-yuan.github.io/ccf-collect/](https://jw-yuan.github.io/ccf-collect/)
+
 ## 数据来源
 
 - **官方网站**：[中国计算机学会 (CCF)](https://www.ccf.org.cn/)

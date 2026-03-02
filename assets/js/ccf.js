@@ -122,45 +122,32 @@ function applyFilters() {
         }
         return true;
     });
-    var isDefaultView = !currentField && !currentType && !currentRating && !searchInput;
     var fieldOrder = getFieldOrder();
     var typeOrder = getTypeOrder();
     if (list.length > 0) {
-        if (isDefaultView) {
-            var ratingOrder = { 'A': 0, 'B': 1, 'C': 2 };
-            function ratingRank(r) {
-                var raw = (r || '').toString().trim().replace(/类$/, '').toUpperCase().charAt(0);
-                return ratingOrder[raw] !== undefined ? ratingOrder[raw] : 3;
-            }
-            list.sort(function (a, b) {
-                var ra = ratingRank(a.Rating);
-                var rb = ratingRank(b.Rating);
-                if (ra !== rb) return ra - rb;
-                var fa = fieldOrder.indexOf(a.field);
-                var fb = fieldOrder.indexOf(b.field);
-                if (fa !== fb) return fa - fb;
-                var ta = typeOrder.indexOf(a.type);
-                var tb = typeOrder.indexOf(b.type);
-                if (ta !== tb) return ta - tb;
-                return (a['Full-Name'] || '').localeCompare(b['Full-Name'] || '', 'zh-CN');
-            });
-        } else {
-            list.sort(function (a, b) {
-                var fa = fieldOrder.indexOf(a.field);
-                var fb = fieldOrder.indexOf(b.field);
-                if (fa !== fb) return fa - fb;
-                var ta = typeOrder.indexOf(a.type);
-                var tb = typeOrder.indexOf(b.type);
-                if (ta !== tb) return ta - tb;
-                return (a['Full-Name'] || '').localeCompare(b['Full-Name'] || '', 'zh-CN');
-            });
+        var ratingOrder = { 'A': 0, 'B': 1, 'C': 2 };
+        function ratingRank(r) {
+            var raw = (r || '').toString().trim().replace(/类$/, '').toUpperCase().charAt(0);
+            return ratingOrder[raw] !== undefined ? ratingOrder[raw] : 3;
         }
+        list.sort(function (a, b) {
+            var ra = ratingRank(a.Rating);
+            var rb = ratingRank(b.Rating);
+            if (ra !== rb) return ra - rb;
+            var fa = fieldOrder.indexOf(a.field);
+            var fb = fieldOrder.indexOf(b.field);
+            if (fa !== fb) return fa - fb;
+            var ta = typeOrder.indexOf(a.type);
+            var tb = typeOrder.indexOf(b.type);
+            if (ta !== tb) return ta - tb;
+            return (a['Full-Name'] || '').localeCompare(b['Full-Name'] || '', 'zh-CN');
+        });
     }
-    renderCards(list, list.length > 0, searchInput, caseSensitive);
+    renderCards(list, searchInput, caseSensitive);
     document.getElementById('result-n').textContent = list.length;
 }
 
-function renderCards(list, showGroupByField, searchHighlight, searchCaseSensitive) {
+function renderCards(list, searchHighlight, searchCaseSensitive) {
     var container = document.getElementById('cards-container');
     container.innerHTML = '';
 
@@ -171,36 +158,31 @@ function renderCards(list, showGroupByField, searchHighlight, searchCaseSensitiv
 
     var search = (searchHighlight && searchHighlight.length > 0) ? searchHighlight : '';
     var caseSensitive = !!searchCaseSensitive;
-    if (showGroupByField) {
-        var lastField = null;
-        var lastType = null;
-        list.forEach(function (item) {
-            var typeLabel = item.type === 'journal' ? '期刊' : '会议';
-            if (item.field !== lastField) {
-                lastField = item.field;
-                lastType = null;
-                var titleDiv = document.createElement('div');
-                titleDiv.className = 'ccf-field-title';
-                titleDiv.textContent = item.field || '—';
-                container.appendChild(titleDiv);
-            }
-            if (item.type !== lastType) {
-                lastType = item.type;
-                var typeDiv = document.createElement('div');
-                typeDiv.className = 'ccf-type-divider';
-                typeDiv.innerHTML =
-                    '<span class="ccf-type-divider-line"></span>' +
-                    '<span class="ccf-type-divider-label">' + typeLabel + '</span>' +
-                    '<span class="ccf-type-divider-line"></span>';
-                container.appendChild(typeDiv);
-            }
-            container.appendChild(buildCard(item, search, caseSensitive));
-        });
-    } else {
-        list.forEach(function (item) {
-            container.appendChild(buildCard(item, search, caseSensitive));
-        });
-    }
+    /* 有结果时始终使用分组布局：居左领域 + 横杠类型，仅在遇到该领域/类型时输出（不存在则不显示） */
+    var lastField = null;
+    var lastType = null;
+    list.forEach(function (item) {
+        var typeLabel = item.type === 'journal' ? '期刊' : '会议';
+        if (item.field !== lastField) {
+            lastField = item.field;
+            lastType = null;
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'ccf-field-title';
+            titleDiv.textContent = item.field || '—';
+            container.appendChild(titleDiv);
+        }
+        if (item.type !== lastType) {
+            lastType = item.type;
+            var typeDiv = document.createElement('div');
+            typeDiv.className = 'ccf-type-divider';
+            typeDiv.innerHTML =
+                '<span class="ccf-type-divider-line"></span>' +
+                '<span class="ccf-type-divider-label">' + typeLabel + '</span>' +
+                '<span class="ccf-type-divider-line"></span>';
+            container.appendChild(typeDiv);
+        }
+        container.appendChild(buildCard(item, search, caseSensitive));
+    });
 }
 
 function highlightMatch(text, search, caseSensitive) {
